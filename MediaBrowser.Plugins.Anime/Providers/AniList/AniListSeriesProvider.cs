@@ -24,7 +24,6 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniList
         private readonly Api _api;
         public int Order => -2;
         public string Name => "AniList";
-        public static readonly SemaphoreSlim ResourcePool = new SemaphoreSlim(1, 1);
 
         public AniListSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient, ILogManager logManager, IJsonSerializer jsonSerializer)
         {
@@ -105,8 +104,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniList
             return _httpClient.GetResponse(new HttpRequestOptions
             {
                 CancellationToken = cancellationToken,
-                Url = url,
-                ResourcePool = ResourcePool
+                Url = url
             });
         }
     }
@@ -160,8 +158,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniList
             return _httpClient.GetResponse(new HttpRequestOptions
             {
                 CancellationToken = cancellationToken,
-                Url = url,
-                ResourcePool = AniListSeriesProvider.ResourcePool
+                Url = url
             });
         }
     }

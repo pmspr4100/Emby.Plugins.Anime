@@ -20,7 +20,6 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         private readonly IHttpClient _httpClient;
         private readonly IApplicationPaths _paths;
         private readonly Api _api;
-        public static readonly SemaphoreSlim ResourcePool = new SemaphoreSlim(1, 1);
         public static string provider_name = ProviderNames.MyAnimeList;
         public int Order => -5;
         public string Name => "MyAnimeList";
@@ -107,8 +106,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
             return _httpClient.GetResponse(new HttpRequestOptions
             {
                 CancellationToken = cancellationToken,
-                Url = url,
-                ResourcePool = ResourcePool
+                Url = url
             });
         }
     }
@@ -118,7 +116,6 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         private readonly IHttpClient _httpClient;
         private readonly IApplicationPaths _appPaths;
         private readonly Api _api;
-        public static readonly SemaphoreSlim ResourcePool = new SemaphoreSlim(1, 1);
 
         public MyAnimeListSeriesImageProvider(IHttpClient httpClient, IApplicationPaths appPaths, ILogManager logManager)
         {
@@ -164,8 +161,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
             return _httpClient.GetResponse(new HttpRequestOptions
             {
                 CancellationToken = cancellationToken,
-                Url = url,
-                ResourcePool = MyAnimeListSeriesProvider.ResourcePool
+                Url = url
             });
         }
     }

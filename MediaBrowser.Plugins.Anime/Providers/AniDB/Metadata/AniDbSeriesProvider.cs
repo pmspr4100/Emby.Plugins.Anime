@@ -30,7 +30,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
         private const string ClientName = "mediabrowser";
 
         // AniDB has very low request rate limits, a minimum of 2 seconds between requests, and an average of 4 seconds between requests
-        public static readonly SemaphoreSlim ResourcePool = new SemaphoreSlim(1, 1);
+        //public static readonly SemaphoreSlim ResourcePool = new SemaphoreSlim(1, 1);
 
         public static readonly RateLimiter RequestLimiter = new RateLimiter(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(5));
         private static readonly int[] IgnoredCategoryIds = { 6, 22, 23, 60, 128, 129, 185, 216, 242, 255, 268, 269, 289 };
@@ -117,8 +117,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             return _httpClient.GetResponse(new HttpRequestOptions
             {
                 CancellationToken = cancellationToken,
-                Url = url,
-                ResourcePool = ResourcePool
+                Url = url
             });
         }
 
