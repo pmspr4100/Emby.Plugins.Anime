@@ -91,13 +91,13 @@
                             var page = $.mobile.activePage;
 
                             $('#titleLanguage', page).val(config.TitlePreference).change();
-                            $('#chkAutomaticUpdates', page).checked(config.AllowAutomaticMetadataUpdates).checkboxradio("refresh");
-                            $('#chkTidyGenres', page).checked(config.TidyGenreList).checkboxradio("refresh");
+                            $('#chkAutomaticUpdates', page).checked(config.AllowAutomaticMetadataUpdates);
+                            $('#chkTidyGenres', page).checked(config.TidyGenreList);
                             //$('#chkMyAnimeList_API_Name', page, val(config.MyAnimeList_API_Name)).change();
                             //$('#chkMyAnimeList_API_Pw', page, val(config.MyAnimeList_API_Pw)).change();
                             $('#chkMaxGenres', page).val(config.MaxGenres).change();
-                            $('#chkMoveExcessGenresToTags', page).checked(config.MoveExcessGenresToTags).checkboxradio("refresh");
-                            $('#chkAnidbSeasonOne', page).checked(config.UseAnidbOrderingWithSeasons).checkboxradio("refresh");
+                            $('#chkMoveExcessGenresToTags', page).checked(config.MoveExcessGenresToTags);
+                            $('#chkAnidbSeasonOne', page).checked(config.UseAnidbOrderingWithSeasons);
                             $('#chkAniDB_wait_time', page).val(config.AniDB_wait_time).change();
 
                             Dashboard.hideLoadingMsg();
