@@ -84,11 +84,10 @@
                     virtualFolders: [],
                     physicalFolders: [],
 
-                    loadConfiguration: function() {
+                    loadConfiguration: function(page) {
                         Dashboard.showLoadingMsg();
 
                         ApiClient.getPluginConfiguration(AnimeConfigurationPage.pluginUniqueId).then(function (config) {
-                            var page = $.mobile.activePage;
 
                             $('#titleLanguage', page).val(config.TitlePreference).change();
                             $('#chkAutomaticUpdates', page).checked(config.AllowAutomaticMetadataUpdates);
@@ -104,15 +103,13 @@
                         });
                     },
 
-                    saveConfiguration: function() {
+                    saveConfiguration: function(form) {
                         Dashboard.showLoadingMsg();
-
-                        var page = $.mobile.activePage;
 
                         ApiClient.getPluginConfiguration(AnimeConfigurationPage.pluginUniqueId).then(function(config) {
 
-                            config.TitlePreference = $('#titleLanguage', page).val();
-                            config.AllowAutomaticMetadataUpdates = $('#chkAutomaticUpdates', page).prop('checked');
+                            config.TitlePreference = $('#titleLanguage', form).val();
+                            config.AllowAutomaticMetadataUpdates = $('#chkAutomaticUpdates', form).prop('checked');
                             config.TidyGenreList = $('#chkTidyGenres').prop('checked');
                             config.MaxGenres = $('#chkMaxGenres').val();
                             config.MaxGenres = $('#chkNames').val();
@@ -129,11 +126,11 @@
                 };
 
                 $('#animeConfigurationPage').on('pageshow', function () {
-                    AnimeConfigurationPage.loadConfiguration();
+                    AnimeConfigurationPage.loadConfiguration(this);
                 });
 
                 $('#animeConfigurationForm').on('submit', function () {
-                    AnimeConfigurationPage.saveConfiguration();
+                    AnimeConfigurationPage.saveConfiguration(this);
                     return false;
                 });
             </script>
