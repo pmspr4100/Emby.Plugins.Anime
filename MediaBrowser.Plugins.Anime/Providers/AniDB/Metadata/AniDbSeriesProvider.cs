@@ -565,7 +565,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                 EnableHttpCompression = false
             };
 
-            await RequestLimiter.Tick();
+            await RequestLimiter.Tick(cancellationToken);
             await Task.Run(() => Thread.Sleep(Plugin.Instance.Configuration.AniDB_wait_time));
             using (var stream = await httpClient.Get(requestOptions).ConfigureAwait(false))
             using (var unzipped = new GZipStream(stream, CompressionMode.Decompress))

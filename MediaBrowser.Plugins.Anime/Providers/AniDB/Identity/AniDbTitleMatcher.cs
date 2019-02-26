@@ -39,7 +39,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
 
         private readonly ILogger _logger;
         public readonly IAniDbTitleDownloader _downloader;
-        private readonly AsyncLock _lock;
+        private readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
 
         public static Dictionary<string, TitleInfo> _titles;
 
@@ -52,7 +52,6 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
         {
             _logger = logger;
             _downloader = downloader;
-            _lock = new AsyncLock();
         }
 
         public Task<string> FindSeries(string title)
@@ -62,12 +61,18 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
 
         public async Task<string> FindSeries(string title, CancellationToken cancellationToken)
         {
-            using (await _lock.LockAsync())
+            await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
+
+            try
             {
                 if (!IsLoaded)
                 {
                     await Load(cancellationToken).ConfigureAwait(false);
                 }
+            }
+            finally
+            {
+                _lock.Release();
             }
 
             return LookupAniDbId(title) ?? LookupAniDbId(GetComparableName(title));

@@ -54,7 +54,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
             // download titles if we do not already have them, or have not updated for a week
             if (!titlesFileInfo.Exists || (DateTime.UtcNow - titlesFileInfo.LastWriteTimeUtc).TotalDays > 7)
             {
-                await DownloadTitles_static(titlesFile).ConfigureAwait(false);
+                await DownloadTitles_static(titlesFile, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -66,7 +66,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
             // download titles if we do not already have them, or have not updated for a week
             if (!titlesFileInfo.Exists || (DateTime.UtcNow - titlesFileInfo.LastWriteTimeUtc).TotalDays > 7)
             {
-                await DownloadTitles(titlesFile).ConfigureAwait(false);
+                await DownloadTitles(titlesFile, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -75,13 +75,13 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
         /// and saves it to disk.
         /// </summary>
         /// <param name="titlesFile">The destination file name.</param>
-        private async Task DownloadTitles(string titlesFile)
+        private async Task DownloadTitles(string titlesFile, CancellationToken cancellationToken)
         {
             _logger.Debug("Downloading new AniDB titles file.");
 
             var client = new WebClient();
 
-            await AniDbSeriesProvider.RequestLimiter.Tick();
+            await AniDbSeriesProvider.RequestLimiter.Tick(cancellationToken);
             await Task.Run(() => Thread.Sleep(Plugin.Instance.Configuration.AniDB_wait_time));
             using (var stream = await client.OpenReadTaskAsync(TitlesUrl))
             using (var unzipped = new GZipStream(stream, CompressionMode.Decompress))
@@ -97,11 +97,11 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
         /// </summary>
         /// <param name="titlesFile"></param>
         /// <returns></returns>
-        private static async Task DownloadTitles_static(string titlesFile)
+        private static async Task DownloadTitles_static(string titlesFile, CancellationToken cancellationToken)
         {
             var client = new WebClient();
 
-            await AniDbSeriesProvider.RequestLimiter.Tick();
+            await AniDbSeriesProvider.RequestLimiter.Tick(cancellationToken);
             await Task.Run(() => Thread.Sleep(Plugin.Instance.Configuration.AniDB_wait_time));
             using (var stream = await client.OpenReadTaskAsync(TitlesUrl))
             using (var unzipped = new GZipStream(stream, CompressionMode.Decompress))

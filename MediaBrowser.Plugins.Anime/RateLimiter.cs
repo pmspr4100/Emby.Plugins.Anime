@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MediaBrowser.Plugins.Anime
@@ -14,7 +15,7 @@ namespace MediaBrowser.Plugins.Anime
     /// </remarks>
     public class RateLimiter
     {
-        private readonly AsyncLock _lock;
+        private readonly SemaphoreSlim _lock = new SemaphoreSlim(1,1);
         private readonly int _maxAllowedInWindow;
         private readonly TimeSpan _minimumInterval;
         private readonly TimeSpan _targetInterval;
@@ -33,7 +34,6 @@ namespace MediaBrowser.Plugins.Anime
         public RateLimiter(TimeSpan minimumInterval, TimeSpan targetInterval, TimeSpan timeWindow)
         {
             _window = new List<DateTime>();
-            _lock = new AsyncLock();
             _minimumInterval = minimumInterval;
             _targetInterval = targetInterval;
             _timeWindowDuration = timeWindow;
@@ -47,9 +47,11 @@ namespace MediaBrowser.Plugins.Anime
         ///     Attempts to trigger an event, waiting if needed.
         /// </summary>
         /// <returns>A task which completes when it is safe to proceed.</returns>
-        public async Task Tick()
+        public async Task Tick(CancellationToken cancellationToken)
         {
-            using (await _lock.LockAsync())
+            await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
+
+            try
             {
                 TimeSpan wait = CalculateWaitDuration();
                 if (wait.Ticks > 0)
@@ -60,6 +62,10 @@ namespace MediaBrowser.Plugins.Anime
                 DateTime now = DateTime.Now;
                 _window.Add(now);
                 _lastTake = now;
+            }
+            finally
+            {
+                _lock.Release();
             }
         }
 
