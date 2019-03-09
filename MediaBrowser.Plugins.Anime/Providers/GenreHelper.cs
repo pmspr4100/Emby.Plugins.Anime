@@ -10,6 +10,7 @@ namespace MediaBrowser.Plugins.Anime.Providers
     {
         private static readonly Dictionary<string, string> GenreMappings = new Dictionary<string, string>
         {
+            {"Alien", "Sci-Fi"},
             {"Action", "Action"},
             {"Advanture", "Adventure"},
             {"Contemporary Fantasy", "Fantasy"},
@@ -22,7 +23,7 @@ namespace MediaBrowser.Plugins.Anime.Providers
             {"Fantasy", "Fantasy"},
             {"Harem", "Harem"},
             {"Hentai", "Adult"},
-            {"Historical", "Period & Historical"},
+            {"Historical", "Historical"},
             {"Horror", "Horror"},
             {"Josei", "Josei"},
             {"Kids", "Kids"},
@@ -32,14 +33,18 @@ namespace MediaBrowser.Plugins.Anime.Providers
             {"Mecha", "Mecha"},
             {"Music", "Music"},
             {"Mystery", "Mystery"},
+            {"Parallel World", "Parallel World"},
             {"Parody", "Comedy"},
-            {"Psychological", "Psychological Thriller"},
+            {"Psychological Thriller", "Psychological"},
             {"Romance", "Romance"},
+            {"School Life", "School"},
             {"Sci-Fi", "Sci-Fi"},
+            {"Science Fiction", "Sci-Fi"},
             {"Seinen", "Seinen"},
             {"Shoujo", "Shoujo"},
             {"Shounen", "Shounen"},
             {"Slice of Life", "Slice of Life"},
+            {"Slice Of Life", "Slice of Life"},
             {"Space", "Sci-Fi"},
             {"Sports", "Sport"},
             {"Supernatural", "Supernatural"},
@@ -257,11 +262,12 @@ namespace MediaBrowser.Plugins.Anime.Providers
                 string mapped;
                 if (GenreMappings.TryGetValue(genre, out mapped))
                     genres.Add(mapped);
+                /*
                 else
                 {
                     genres.Add(genre);
                 }
-
+                */
                 if (GenresAsTags.Contains(genre))
                 {
                     genres.Add(genre);

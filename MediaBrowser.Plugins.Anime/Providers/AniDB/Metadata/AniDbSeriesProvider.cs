@@ -244,6 +244,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                             case "tags":
                                 using (var subtree = reader.ReadSubtree())
                                 {
+                                    ParseTags(series, subtree);
                                 }
 
                                 break;
@@ -251,7 +252,6 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                             case "categories":
                                 using (var subtree = reader.ReadSubtree())
                                 {
-                                    ParseCategories(series, subtree);
                                 }
 
                                 break;
@@ -305,15 +305,14 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             }
         }
 
-        private void ParseCategories(Series series, XmlReader reader)
+        private void ParseTags(Series series, XmlReader reader)
         {
             var genres = new List<GenreInfo>();
 
             while (reader.Read())
             {
-                if (reader.NodeType == XmlNodeType.Element && reader.Name == "category")
+                if (reader.NodeType == XmlNodeType.Element && reader.Name == "tag")
                 {
-               
                     if (!int.TryParse(reader.GetAttribute("weight"), out int weight) || weight < 400)
                         continue;
 
@@ -330,7 +329,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                             if (categorySubtree.NodeType == XmlNodeType.Element && categorySubtree.Name == "name")
                             {
                                 var name = categorySubtree.ReadElementContentAsString();
-                                genres.Add(new GenreInfo { Name = name, Weight = weight });
+                                genres.Add(new GenreInfo { Name = UpperCase(name), Weight = weight });
                             }
                         }
                     }
@@ -390,6 +389,21 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             }
         }
 
+        private static string UpperCase(string value)
+        {
+            char[] array = value.ToCharArray();
+            if (array.Length >= 1)
+                if (char.IsLower(array[0]))
+                    array[0] = char.ToUpper(array[0]);
+
+            for (int i = 1; i < array.Length; i++)
+                if (array[i - 1] == ' ' || array[i - 1] == '-')
+                    if (char.IsLower(array[i]))
+                        array[i] = char.ToUpper(array[i]);
+
+            return new string(array);
+        }
+
         private string StripAniDbLinks(string text)
         {
             return AniDbUrlRegex.Replace(text, "${name}");
@@ -397,7 +411,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
 
         public static string ReplaceLineFeedWithNewLine(string text)
         {
-            return text.Replace("\n", Environment.NewLine);
+            return text.Replace("\n", "<br>\n");
         }
 
         private void ParseActors(MetadataResult<Series> series, XmlReader reader)
