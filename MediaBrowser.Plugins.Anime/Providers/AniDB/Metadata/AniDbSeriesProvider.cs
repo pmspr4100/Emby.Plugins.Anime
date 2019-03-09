@@ -173,6 +173,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                     {
                                         date = date.ToUniversalTime();
                                         series.PremiereDate = date;
+                                        series.ProductionYear = date.Year;
                                     }
                                 }
 
