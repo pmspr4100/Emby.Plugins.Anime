@@ -196,9 +196,14 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                 using (var subtree = reader.ReadSubtree())
                                 {
                                     var title = ParseTitle(subtree, preferredMetadataLangauge);
+                                    var orig_title = ParseTitle(subtree, "ja");
                                     if (!string.IsNullOrEmpty(title))
                                     {
                                         series.Name = title;
+                                    }
+                                    if (!string.IsNullOrEmpty(orig_title))
+                                    {
+                                        series.OriginalTitle = orig_title;
                                     }
                                 }
 
