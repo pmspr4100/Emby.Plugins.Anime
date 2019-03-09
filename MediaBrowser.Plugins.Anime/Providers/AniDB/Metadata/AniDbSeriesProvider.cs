@@ -188,6 +188,14 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                     {
                                         date = date.ToUniversalTime();
                                         series.EndDate = date;
+                                        if (DateTime.Now.Date < date.Date)
+                                        {
+                                            series.Status = SeriesStatus.Continuing;
+                                        }
+                                        else
+                                        {
+                                            series.Status = SeriesStatus.Ended;
+                                        }
                                     }
                                 }
 
@@ -197,14 +205,9 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                 using (var subtree = reader.ReadSubtree())
                                 {
                                     var title = ParseTitle(subtree, preferredMetadataLangauge);
-                                    var orig_title = ParseTitle(subtree, "ja");
                                     if (!string.IsNullOrEmpty(title))
                                     {
                                         series.Name = title;
-                                    }
-                                    if (!string.IsNullOrEmpty(orig_title))
-                                    {
-                                        series.OriginalTitle = orig_title;
                                     }
                                 }
 
@@ -272,6 +275,10 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                         }
                     }
                 }
+            }
+            if (series.EndDate == null)
+            {
+                series.Status = SeriesStatus.Continuing;
             }
 
             GenreHelper.CleanupGenres(series);
