@@ -18,6 +18,7 @@
                             <option id="optLanguageJapanese" value="Japanese">Japanese</option>
                             <option id="optLanguageGerman" value="German">German</option>
 						</select>
+						<div class="selectArrowContainer"><div style="visibility:hidden;">0</div><i class="selectArrow md-icon"></i></div>
 					</div>
 					<!--
                     <div class="checkboxContainer checkboxContainer-withDescription">
@@ -43,9 +44,9 @@
 					</div>
 					
 					<div class="inputContainer">
-						<label class="inputLabel inputLabel-float inputLabelUnfocused" for="chkAniDB_wait_time">AniDB wait time too prevent IP ban (in ms (1000 = 1 Second))</label>
+						<label class="inputLabel inputLabel-float inputLabelUnfocused" for="chkAniDB_wait_time">AniDB wait time [ms]</label>
 						<input is="emby-input" type="number" min="0" id="chkAniDB_wait_time" name="chkAniDB_wait_time" class="emby-input">
-						<div class="fieldDescription"></div>
+						<div class="fieldDescription">Set this to prevent IP ban.</div>
 					</div>
 					<!--
                     <div class="checkboxContainer checkboxContainer-withDescription">
