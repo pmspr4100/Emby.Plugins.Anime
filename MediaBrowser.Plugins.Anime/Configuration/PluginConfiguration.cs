@@ -25,8 +25,7 @@ namespace MediaBrowser.Plugins.Anime.Configuration
         German,
     }
 
-    public class PluginConfiguration
-        : BasePluginConfiguration
+    public class PluginConfiguration : BasePluginConfiguration
     {
         public TitlePreferenceType TitlePreference { get; set; }
         public bool TidyGenreList { get; set; }
@@ -37,13 +36,8 @@ namespace MediaBrowser.Plugins.Anime.Configuration
         public int AniDB_wait_time { get; set; }
         public PluginConfiguration()
         {
-            TitlePreference = TitlePreferenceType.Localized;
-            TidyGenreList = true;
-            MaxGenres = 5;
-            AddAnimeGenre = true;
             MyAnimeList_API_Name = "";
             MyAnimeList_API_Pw = "";
-            AniDB_wait_time = 0;
         }
     }
 }
