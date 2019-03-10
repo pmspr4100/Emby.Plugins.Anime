@@ -29,6 +29,12 @@
 						<div class="fieldDescription checkboxFieldDescription"></div>
                     </div>
 					-->
+					<div class="inputContainer">
+						<label class="inputLabel inputLabel-float inputLabelUnfocused" for="chkMaxGenres">Max Genres [0: unlimited]</label>
+						<input is="emby-input" type="number" min="0" id="chkMaxGenres" name="chkMaxGenres" class="emby-input">
+						<div class="fieldDescription"></div>
+					</div>
+					
                     <div class="checkboxContainer checkboxContainer-withDescription">
                         <label>
                             <input is="emby-checkbox" type="checkbox" id="chkTidyGenres" name="chkTidyGenres"/>
@@ -37,11 +43,13 @@
 						<div class="fieldDescription checkboxFieldDescription"></div>
                     </div>
 					
-					<div class="inputContainer">
-						<label class="inputLabel inputLabel-float inputLabelUnfocused" for="chkMaxGenres">Max Genres [0: unlimited]</label>
-						<input is="emby-input" type="number" min="0" id="chkMaxGenres" name="chkMaxGenres" class="emby-input">
-						<div class="fieldDescription"></div>
-					</div>
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkAddAnimeGenre" name="chkAddAnimeGenre"/>
+                            <span>Add Anime Genre</span>
+                        </label>
+						<div class="fieldDescription checkboxFieldDescription"></div>
+                    </div>
 					
 					<div class="inputContainer">
 						<label class="inputLabel inputLabel-float inputLabelUnfocused" for="chkAniDB_wait_time">AniDB wait time [ms]</label>
@@ -57,14 +65,6 @@
 						<div class="fieldDescription checkboxFieldDescription"></div>
                     </div>
 					-->
-                    <div class="checkboxContainer checkboxContainer-withDescription">
-                        <label>
-                            <input is="emby-checkbox" type="checkbox" id="chkAddAnimeGenre" name="chkAddAnimeGenre"/>
-                            <span>Add Anime Genre</span>
-                        </label>
-						<div class="fieldDescription checkboxFieldDescription"></div>
-                    </div>
-
                     <br />
                     <div>
                         <button is="emby-button" type="submit" class="raised button-submit block emby-button"><span>Save</span></button>
