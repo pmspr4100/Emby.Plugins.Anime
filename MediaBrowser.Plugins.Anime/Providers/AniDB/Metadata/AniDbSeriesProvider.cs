@@ -222,7 +222,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                 break;
 
                             case "description":
-                                series.Overview = ReplaceLineFeedWithNewLine(StripAniDbLinks(reader.ReadElementContentAsString()));
+                                series.Overview = ReplaceLineFeedWithNewLine(StripAniDbLinks(reader.ReadElementContentAsString()).Split(new[] { "Source:", "Note:" }, StringSplitOptions.None)[0]);
 
                                 break;
 
