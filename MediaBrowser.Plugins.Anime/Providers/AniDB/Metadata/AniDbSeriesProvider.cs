@@ -417,7 +417,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             return new string(array);
         }
 
-        private string StripAniDbLinks(string text)
+        public static string StripAniDbLinks(string text)
         {
             return AniDbUrlRegex.Replace(text, "${name}");
         }
