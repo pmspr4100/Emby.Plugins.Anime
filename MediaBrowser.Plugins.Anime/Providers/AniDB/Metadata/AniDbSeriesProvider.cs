@@ -48,6 +48,57 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             {"Series Composition", PersonType.Writer}
         };
 
+        private static readonly Dictionary<string, string> TagsToGenre = new Dictionary<string, string>
+        {
+            {"action", "Action"},
+            {"adventure", "Adventure"},
+            {"motorsport", "Cars"},
+            {"comedy", "Comedy"},
+            {"dementia", "Dementia"},
+            {"demon", "Demons"},
+            {"melodrama", "Drama"},
+            {"ecchi", "Ecchi"},
+            {"fantasy", "Fantasy"},
+            {"dark fantasy", "Fantasy"},
+            {"game", "Game"},
+            {"harem", "Harem"},
+            {"18 restricted", "Hentai"},
+            {"erotic game", "Hentai"},
+            {"sex", "Hentai"},
+            {"historical", "Historical"},
+            {"horror", "Horror"},
+            {"josei", "Josei"},
+            {"magic", "Magic"},
+            {"martial arts", "Martial Arts"},
+            {"mecha", "Mecha"},
+            {"military", "Military"},
+            {"music", "Music"},
+            {"mystery", "Mystery"},
+            {"parody", "Parody"},
+            {"cops", "Police"},
+            {"psychological", "Psychological"},
+            {"romance", "Romance"},
+            {"samurai", "Samurai"},
+            {"school", "School"},
+            {"science fiction", "Sci-Fi"},
+            {"seinen", "Seinen"},
+            {"shoujo", "Shoujo"},
+            {"shoujo ai", "Shoujo Ai"},
+            {"shounen", "Shounen"},
+            {"shounen ai", "Shounen Ai"},
+            {"daily life", "Slice of Life"},
+            {"space", "Space"},
+            {"alien", "Space"},
+            {"space travel", "Space"},
+            {"sports", "Sports"},
+            {"super power", "Super Power"},
+            {"contemporary fantasy", "Supernatural"},
+            {"thriller", "Thriller"},
+            {"vampire", "Vampire"},
+            {"yaoi", "Yaoi"},
+            {"yuri", "Yuri"}
+        };
+
         public AniDbSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient)
         {
             _appPaths = appPaths;
@@ -329,7 +380,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             {
                 if (reader.NodeType == XmlNodeType.Element && reader.Name == "tag")
                 {
-                    if (!int.TryParse(reader.GetAttribute("weight"), out int weight) || weight < 400)
+                    if (!int.TryParse(reader.GetAttribute("weight"), out int weight))
                         continue;
 
                     if (int.TryParse(reader.GetAttribute("id"), out int id) && IgnoredCategoryIds.Contains(id))
@@ -340,12 +391,27 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
 
                     using (var categorySubtree = reader.ReadSubtree())
                     {
+                        PluginConfiguration config = Plugin.Instance.Configuration;
                         while (categorySubtree.Read())
                         {
                             if (categorySubtree.NodeType == XmlNodeType.Element && categorySubtree.Name == "name")
                             {
-                                var name = categorySubtree.ReadElementContentAsString();
-                                genres.Add(new GenreInfo { Name = UpperCase(name), Weight = weight });
+                                /*
+                                 * Since AniDB tagging (and weight) system is really messy additional TagsToGenre conversion was added. This method adds matching genre regardless of its weight.
+                                 * 
+                                 * If tags are not converted weight limitation works as in previous plugin versions (>=1.3.5)
+                                 */
+                                if (config.TidyGenreList)
+                                {
+                                    var name = categorySubtree.ReadElementContentAsString();
+                                    if (TagsToGenre.TryGetValue(name, out string mapped))
+                                        genres.Add(new GenreInfo { Name = mapped, Weight = weight });
+                                }
+                                else if (weight >= 400)
+                                {
+                                    var name = categorySubtree.ReadElementContentAsString();
+                                    genres.Add(new GenreInfo { Name = UpperCase(name), Weight = weight });
+                                }
                             }
                         }
                     }
