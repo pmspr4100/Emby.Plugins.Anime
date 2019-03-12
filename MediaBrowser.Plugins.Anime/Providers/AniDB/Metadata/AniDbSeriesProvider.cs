@@ -46,7 +46,8 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             {"Chief Animation Direction", PersonType.Director},
             {"Original Work", PersonType.Writer},
             {"Character Design", PersonType.Writer},
-            {"Series Composition", PersonType.Writer}
+            {"Series Composition", PersonType.Writer},
+            {"Original Plan", PersonType.Writer}
         };
 
         private static readonly Dictionary<string, string> TagsToGenre = new Dictionary<string, string>
