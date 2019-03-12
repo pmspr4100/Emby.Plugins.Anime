@@ -41,6 +41,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
         private readonly Dictionary<string, PersonType> _typeMappings = new Dictionary<string, PersonType>
         {
             {"Direction", PersonType.Director},
+            {"Chief Direction", PersonType.Director},
             {"Music", PersonType.Composer},
             {"Chief Animation Direction", PersonType.Director},
             {"Original Work", PersonType.Writer},
