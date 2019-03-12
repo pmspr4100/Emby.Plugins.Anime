@@ -85,12 +85,12 @@
                 Dashboard.showLoadingMsg();
                 var page = this;
                 ApiClient.getPluginConfiguration(animeConfigurationPage.pluginUniqueId).then(function (config) {
-                    $('#titleLanguage', page).val(config.TitlePreference || "JapaneseRomaji").change();
-					//$('#chkAutomaticUpdates', page).checked(Boolean(config.AllowAutomaticMetadataUpdates && true));
+                    $('#titleLanguage', page).val(config.TitlePreference).change();
+                	//$('#chkAutomaticUpdates', page).checked(config.AllowAutomaticMetadataUpdates);
                     $('#chkTidyGenres', page).checked(config.TidyGenreList);
-					$('#chkMaxGenres', page).val(config.MaxGenres != null ? config.MaxGenres : 5).change();
-					$('#chkAniDB_wait_time', page).val(config.AniDB_wait_time != null ? config.AniDB_wait_time : 0).change();
-					//$('#chkAnidbSeasonOne', page).checked(Boolean(config.UseAnidbOrderingWithSeasons && true));
+					$('#chkMaxGenres', page).val(config.MaxGenres).change();
+					$('#chkAniDB_wait_time', page).val(config.AniDB_wait_time).change();
+					//$('#chkAnidbSeasonOne', page).checked(config.UseAnidbOrderingWithSeasons);
 					$('#chkAddAnimeGenre', page).checked(config.AddAnimeGenre);
                     Dashboard.hideLoadingMsg();
                 });
