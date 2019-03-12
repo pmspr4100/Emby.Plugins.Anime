@@ -42,7 +42,10 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
         {
             {"Direction", PersonType.Director},
             {"Music", PersonType.Composer},
-            {"Chief Animation Direction", PersonType.Director}
+            {"Chief Animation Direction", PersonType.Director},
+            {"Original Work", PersonType.Writer},
+            {"Character Design", PersonType.Writer},
+            {"Series Composition", PersonType.Writer}
         };
 
         public AniDbSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient)
@@ -527,7 +530,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                     var type = reader.GetAttribute("type");
                     var name = reader.ReadElementContentAsString();
 
-                    if (type == "Animation Work")
+                    if (type == "Animation Work" || type == "Work")
                     {
                         series.Item.AddStudio(name);
                     }
