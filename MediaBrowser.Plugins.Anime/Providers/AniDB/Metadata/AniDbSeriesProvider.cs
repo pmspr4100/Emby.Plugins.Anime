@@ -52,7 +52,6 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
         {
             {"action", "Action"},
             {"adventure", "Adventure"},
-            {"motorsport", "Cars"},
             {"comedy", "Comedy"},
             {"dementia", "Dementia"},
             {"demon", "Demons"},
@@ -72,6 +71,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             {"martial arts", "Martial Arts"},
             {"mecha", "Mecha"},
             {"military", "Military"},
+            {"motorsport", "Motorsport"},
             {"music", "Music"},
             {"mystery", "Mystery"},
             {"parody", "Parody"},
@@ -399,7 +399,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                 /*
                                  * Since AniDB tagging (and weight) system is really messy additional TagsToGenre conversion was added. This method adds matching genre regardless of its weight.
                                  * 
-                                 * If tags are not converted weight limitation works as in previous plugin versions (>=1.3.5)
+                                 * If tags are not converted weight limitation works as in previous plugin versions (<=1.3.5)
                                  */
                                 if (config.TidyGenreList)
                                 {

@@ -3,10 +3,6 @@ using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Providers;
-using MediaBrowser.Model.IO;
-using MediaBrowser.Model.Logging;
-using MediaBrowser.Model.Xml;
-using MediaBrowser.Plugins.Anime.Providers.AniDB.Converter;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,26 +18,18 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
     /// </summary>
     public class AniDbEpisodeProvider : IRemoteMetadataProvider<Episode, EpisodeInfo>
     {
-        internal static AniDbEpisodeProvider Current;
-        private readonly IFileSystem _fileSystem;
         private readonly IServerConfigurationManager _configurationManager;
         private readonly IHttpClient _httpClient;
-        private readonly ILogger _logger;
-        private readonly IXmlReaderSettingsFactory _xmlSettings;
 
         /// <summary>
         ///     Creates a new instance of the <see cref="AniDbEpisodeProvider" /> class.
         /// </summary>
         /// <param name="configurationManager">The configuration manager.</param>
         /// <param name="httpClient">The HTTP client.</param>
-        public AniDbEpisodeProvider(IFileSystem fileSystem, IServerConfigurationManager configurationManager, IHttpClient httpClient, ILogger logger, IXmlReaderSettingsFactory xmlSettings)
+        public AniDbEpisodeProvider(IServerConfigurationManager configurationManager, IHttpClient httpClient)
         {
             _configurationManager = configurationManager;
-            _fileSystem = fileSystem;
             _httpClient = httpClient;
-            _logger = logger;
-            _xmlSettings = xmlSettings;
-            Current = this;
         }
 
         public async Task<MetadataResult<Episode>> GetMetadata(EpisodeInfo info, CancellationToken cancellationToken)

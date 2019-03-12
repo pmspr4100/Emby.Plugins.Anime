@@ -257,12 +257,11 @@ namespace MediaBrowser.Plugins.Anime.Providers
                 string mapped;
                 if (GenreMappings.TryGetValue(genre, out mapped))
                     genres.Add(mapped);
-                
                 else
                 {
                     genres.Add(genre);
                 }
-                
+
                 if (GenresAsTags.Contains(genre))
                 {
                     genres.Add(genre);
