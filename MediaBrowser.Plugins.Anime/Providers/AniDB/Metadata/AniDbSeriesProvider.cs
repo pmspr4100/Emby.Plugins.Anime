@@ -42,7 +42,11 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
         {
             {"Direction", PersonType.Director},
             {"Music", PersonType.Composer},
-            {"Chief Animation Direction", PersonType.Director}
+            {"Chief Animation Direction", PersonType.Director},
+            {"Series Composition", PersonType.Writer},
+            {"Animation Work", PersonType.Writer},
+            {"Original Work", PersonType.Writer},
+            {"Character Design", PersonType.Writer}
         };
 
         public AniDbSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient)
