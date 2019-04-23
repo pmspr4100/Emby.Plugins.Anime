@@ -41,13 +41,20 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
         private readonly Dictionary<string, PersonType> _typeMappings = new Dictionary<string, PersonType>
         {
             {"Direction", PersonType.Director},
-            {"Chief Direction", PersonType.Director},
             {"Music", PersonType.Composer},
             {"Chief Animation Direction", PersonType.Director},
+            {"Series Composition", PersonType.Writer},
+            {"Animation Work", PersonType.Producer},
             {"Original Work", PersonType.Writer},
             {"Character Design", PersonType.Writer},
-            {"Series Composition", PersonType.Writer},
-            {"Original Plan", PersonType.Writer}
+            {"Work", PersonType.Producer},
+            {"Animation Character Design", PersonType.Writer},
+            {"Effects Direction", PersonType.Writer},
+            {"Original Plan", PersonType.Writer},
+            {"Chief Direction", PersonType.Director},
+            {"Main Character Design", PersonType.Writer},
+            {"Story Composition", PersonType.Writer},
+            {"Magical Bushidou Musashi Design", PersonType.Writer}
         };
 
         private static readonly Dictionary<string, string> TagsToGenre = new Dictionary<string, string>
