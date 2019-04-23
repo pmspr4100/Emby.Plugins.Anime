@@ -44,9 +44,17 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             {"Music", PersonType.Composer},
             {"Chief Animation Direction", PersonType.Director},
             {"Series Composition", PersonType.Writer},
-            {"Animation Work", PersonType.Writer},
+            {"Animation Work", PersonType.Producer},
             {"Original Work", PersonType.Writer},
-            {"Character Design", PersonType.Writer}
+            {"Character Design", PersonType.Writer},
+            {"Work", PersonType.Producer},
+            {"Animation Character Design", PersonType.Writer},
+            {"Effects Direction", PersonType.Writer},
+            {"Original Plan", PersonType.Writer},
+            {"Chief Direction", PersonType.Director},
+            {"Main Character Design", PersonType.Writer},
+            {"Story Composition", PersonType.Writer},
+            {"Magical Bushidou Musashi Design", PersonType.Writer}
         };
 
         public AniDbSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient)
