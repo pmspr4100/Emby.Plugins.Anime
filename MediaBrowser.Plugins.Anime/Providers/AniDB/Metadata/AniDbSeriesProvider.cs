@@ -57,6 +57,57 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             {"Magical Bushidou Musashi Design", PersonType.Writer}
         };
 
+        private static readonly Dictionary<string, string> TagsToGenre = new Dictionary<string, string>
+        {
+            {"action", "Action"},
+            {"adventure", "Adventure"},
+            {"comedy", "Comedy"},
+            {"dementia", "Dementia"},
+            {"demon", "Demons"},
+            {"melodrama", "Drama"},
+            {"ecchi", "Ecchi"},
+            {"fantasy", "Fantasy"},
+            {"dark fantasy", "Fantasy"},
+            {"game", "Game"},
+            {"harem", "Harem"},
+            {"18 restricted", "Hentai"},
+            {"erotic game", "Hentai"},
+            {"sex", "Hentai"},
+            {"historical", "Historical"},
+            {"horror", "Horror"},
+            {"josei", "Josei"},
+            {"magic", "Magic"},
+            {"martial arts", "Martial Arts"},
+            {"mecha", "Mecha"},
+            {"military", "Military"},
+            {"motorsport", "Motorsport"},
+            {"music", "Music"},
+            {"mystery", "Mystery"},
+            {"parody", "Parody"},
+            {"cops", "Police"},
+            {"psychological", "Psychological"},
+            {"romance", "Romance"},
+            {"samurai", "Samurai"},
+            {"school", "School"},
+            {"science fiction", "Sci-Fi"},
+            {"seinen", "Seinen"},
+            {"shoujo", "Shoujo"},
+            {"shoujo ai", "Shoujo Ai"},
+            {"shounen", "Shounen"},
+            {"shounen ai", "Shounen Ai"},
+            {"daily life", "Slice of Life"},
+            {"space", "Space"},
+            {"alien", "Space"},
+            {"space travel", "Space"},
+            {"sports", "Sports"},
+            {"super power", "Super Power"},
+            {"contemporary fantasy", "Supernatural"},
+            {"thriller", "Thriller"},
+            {"vampire", "Vampire"},
+            {"yaoi", "Yaoi"},
+            {"yuri", "Yuri"}
+        };
+
         public AniDbSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient)
         {
             _appPaths = appPaths;
@@ -185,6 +236,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                     {
                                         date = date.ToUniversalTime();
                                         series.PremiereDate = date;
+                                        series.ProductionYear = date.Year;
                                     }
                                 }
 
@@ -199,6 +251,14 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                     {
                                         date = date.ToUniversalTime();
                                         series.EndDate = date;
+                                        if (DateTime.Now.Date < date.Date)
+                                        {
+                                            series.Status = SeriesStatus.Continuing;
+                                        }
+                                        else
+                                        {
+                                            series.Status = SeriesStatus.Ended;
+                                        }
                                     }
                                 }
 
@@ -225,7 +285,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                                 break;
 
                             case "description":
-                                series.Overview = ReplaceLineFeedWithNewLine(StripAniDbLinks(reader.ReadElementContentAsString()));
+                                series.Overview = ReplaceLineFeedWithNewLine(StripAniDbLinks(reader.ReadElementContentAsString()).Split(new[] { "Source:", "Note:" }, StringSplitOptions.None)[0]);
 
                                 break;
 
@@ -256,6 +316,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                             case "tags":
                                 using (var subtree = reader.ReadSubtree())
                                 {
+                                    ParseTags(series, subtree);
                                 }
 
                                 break;
@@ -263,7 +324,6 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                             case "categories":
                                 using (var subtree = reader.ReadSubtree())
                                 {
-                                    ParseCategories(series, subtree);
                                 }
 
                                 break;
@@ -278,6 +338,10 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                         }
                     }
                 }
+            }
+            if (series.EndDate == null)
+            {
+                series.Status = SeriesStatus.Continuing;
             }
 
             GenreHelper.CleanupGenres(series);
@@ -317,16 +381,15 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             }
         }
 
-        private void ParseCategories(Series series, XmlReader reader)
+        private void ParseTags(Series series, XmlReader reader)
         {
             var genres = new List<GenreInfo>();
 
             while (reader.Read())
             {
-                if (reader.NodeType == XmlNodeType.Element && reader.Name == "category")
+                if (reader.NodeType == XmlNodeType.Element && reader.Name == "tag")
                 {
-               
-                    if (!int.TryParse(reader.GetAttribute("weight"), out int weight) || weight < 400)
+                    if (!int.TryParse(reader.GetAttribute("weight"), out int weight))
                         continue;
 
                     if (int.TryParse(reader.GetAttribute("id"), out int id) && IgnoredCategoryIds.Contains(id))
@@ -337,12 +400,27 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
 
                     using (var categorySubtree = reader.ReadSubtree())
                     {
+                        PluginConfiguration config = Plugin.Instance.Configuration;
                         while (categorySubtree.Read())
                         {
                             if (categorySubtree.NodeType == XmlNodeType.Element && categorySubtree.Name == "name")
                             {
-                                var name = categorySubtree.ReadElementContentAsString();
-                                genres.Add(new GenreInfo { Name = name, Weight = weight });
+                                /*
+                                 * Since AniDB tagging (and weight) system is really messy additional TagsToGenre conversion was added. This method adds matching genre regardless of its weight.
+                                 * 
+                                 * If tags are not converted weight limitation works as in previous plugin versions (<=1.3.5)
+                                 */
+                                if (config.TidyGenreList)
+                                {
+                                    var name = categorySubtree.ReadElementContentAsString();
+                                    if (TagsToGenre.TryGetValue(name, out string mapped))
+                                        genres.Add(new GenreInfo { Name = mapped, Weight = weight });
+                                }
+                                else if (weight >= 400)
+                                {
+                                    var name = categorySubtree.ReadElementContentAsString();
+                                    genres.Add(new GenreInfo { Name = UpperCase(name), Weight = weight });
+                                }
                             }
                         }
                     }
@@ -402,14 +480,29 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             }
         }
 
-        private string StripAniDbLinks(string text)
+        private static string UpperCase(string value)
+        {
+            char[] array = value.ToCharArray();
+            if (array.Length >= 1)
+                if (char.IsLower(array[0]))
+                    array[0] = char.ToUpper(array[0]);
+
+            for (int i = 1; i < array.Length; i++)
+                if (array[i - 1] == ' ' || array[i - 1] == '-')
+                    if (char.IsLower(array[i]))
+                        array[i] = char.ToUpper(array[i]);
+
+            return new string(array);
+        }
+
+        public static string StripAniDbLinks(string text)
         {
             return AniDbUrlRegex.Replace(text, "${name}");
         }
 
         public static string ReplaceLineFeedWithNewLine(string text)
         {
-            return text.Replace("\n", Environment.NewLine);
+            return text.Replace("\n", "<br>\n");
         }
 
         private void ParseActors(MetadataResult<Series> series, XmlReader reader)
@@ -512,7 +605,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                     var type = reader.GetAttribute("type");
                     var name = reader.ReadElementContentAsString();
 
-                    if (type == "Animation Work")
+                    if (type == "Animation Work" || type == "Work")
                     {
                         series.Item.AddStudio(name);
                     }
