@@ -13,6 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Plugins.Anime.Providers.AniList.MediaBrowser.Plugins.Anime.Providers.AniList;
 using MediaBrowser.Model.Serialization;
+using MediaBrowser.Model.Configuration;
+
 //API v2
 namespace MediaBrowser.Plugins.Anime.Providers.AniList
 {
@@ -130,7 +132,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniList
             return new[] { ImageType.Primary };
         }
 
-        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
+        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, LibraryOptions libraryOptions, CancellationToken cancellationToken)
         {
             var seriesId = item.GetProviderId(ProviderNames.AniList);
             return GetImages(seriesId, cancellationToken);

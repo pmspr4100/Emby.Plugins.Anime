@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using MediaBrowser.Model.Configuration;
 
 namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
 {
@@ -133,7 +134,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
             return new[] { ImageType.Primary };
         }
 
-        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
+        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, LibraryOptions libraryOptions, CancellationToken cancellationToken)
         {
             var seriesId = item.GetProviderId(MyAnimeListSeriesProvider.provider_name);
             return GetImages(seriesId, cancellationToken);

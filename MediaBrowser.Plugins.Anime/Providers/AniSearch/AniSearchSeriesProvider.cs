@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using MediaBrowser.Model.Configuration;
 
 namespace MediaBrowser.Plugins.Anime.Providers.AniSearch
 {
@@ -124,7 +125,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniSearch
             return new[] { ImageType.Primary };
         }
 
-        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
+        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, LibraryOptions libraryOptions, CancellationToken cancellationToken)
         {
             var seriesId = item.GetProviderId(ProviderNames.AniSearch);
             return GetImages(seriesId, cancellationToken);

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using MediaBrowser.Model.Configuration;
 
 namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
 {
@@ -37,7 +38,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             }).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
+        public Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, LibraryOptions libraryOptions, CancellationToken cancellationToken)
         {
             var series = (Series)item;
             var seriesId = series.GetProviderId(ProviderNames.AniDb);

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediaBrowser.Model.Configuration;
 
 namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
 {
@@ -31,7 +32,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             return new AniDbSeriesImagesProvider(_httpClient, _appPaths).GetImageResponse(url, cancellationToken);
         }
 
-        public async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, LibraryOptions libraryOptions, CancellationToken cancellationToken)
         {
             var season = (Season)item;
             var series = season.Series;
