@@ -23,7 +23,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         //Use API too search
         public string SearchLink = "https://myanimelist.net/api/anime/search.xml?q={0}";
         //Web Fallback search
-        public string FallbackSearchLink= "https://myanimelist.net/search/all?q={0}";
+        public string FallbackSearchLink = "https://myanimelist.net/search/all?q={0}";
         //No API funktion exist too get anime
         public string anime_link = "https://myanimelist.net/anime/";
 
@@ -105,16 +105,15 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
             List<string> result = new List<string>();
             try
             {
-                string Genres = await One_line_regex(new Regex(@"\.setTargeting\(" + "\"genres\"" + @", \[(.*?)\])"), WebContent);
-                int x = 1;
-                Genres = Genres.Replace("\"", "");
-                foreach (string Genre in Genres.Split(','))
+                var regex = new Regex("<a href=\"/anime/genre/.+?\" title=\".+?\">(.+?)</a>");
+                var genres = await Task.Run(() => regex.Matches(WebContent));
+                foreach (Match match in genres)
                 {
-                    if (!string.IsNullOrEmpty(Genre))
+                    var genre = await Task.Run(() => match.Groups[1].Value.ToString());
+                    if (!string.IsNullOrEmpty(genre))
                     {
-                        result.Add(Genre);
+                        result.Add(genre);
                     }
-                    x++;
                 }
                 return result;
             }
@@ -151,7 +150,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         /// <returns></returns>
         public async Task<string> Get_OverviewAsync(string WebContent)
         {
-            return System.Net.WebUtility.HtmlDecode(await One_line_regex(new Regex("itemprop=\\"+'"'+"description\\"+'"'+@">(.*?)<\/span>"), WebContent));
+            return System.Net.WebUtility.HtmlDecode(await One_line_regex(new Regex("itemprop=\\" + '"' + "description\\" + '"' + @">(.*?)<\/span>"), WebContent));
         }
 
         /// <summary>
@@ -169,42 +168,42 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
             if (!string.IsNullOrEmpty(Plugin.Instance.Configuration.MyAnimeList_API_Name) && !string.IsNullOrEmpty(Plugin.Instance.Configuration.MyAnimeList_API_Pw))
             {
                 string WebContent = await WebRequestAPI(string.Format(SearchLink, Uri.EscapeUriString(title)), cancellationToken, Plugin.Instance.Configuration.MyAnimeList_API_Name, Plugin.Instance.Configuration.MyAnimeList_API_Pw);
-            int x = 0;
-            while (result_text != "")
-            {
-                result_text = await One_line_regex(new Regex(@"<entry>(.*?)<\/entry>"), WebContent, 1, x);
-                if (result_text != "")
+                int x = 0;
+                while (result_text != "")
                 {
-                    //get id
-                    string id = await One_line_regex(new Regex(@"<id>(.*?)<\/id>"), result_text);
-                    string a_name = await One_line_regex(new Regex(@"<title>(.*?)<\/title>"), result_text);
-                    string b_name = await One_line_regex(new Regex(@"<english>(.*?)<\/english>"), result_text);
-                    string c_name = await One_line_regex(new Regex(@"<synonyms>(.*?)<\/synonyms>"), result_text);
+                    result_text = await One_line_regex(new Regex(@"<entry>(.*?)<\/entry>"), WebContent, 1, x);
+                    if (result_text != "")
+                    {
+                        //get id
+                        string id = await One_line_regex(new Regex(@"<id>(.*?)<\/id>"), result_text);
+                        string a_name = await One_line_regex(new Regex(@"<title>(.*?)<\/title>"), result_text);
+                        string b_name = await One_line_regex(new Regex(@"<english>(.*?)<\/english>"), result_text);
+                        string c_name = await One_line_regex(new Regex(@"<synonyms>(.*?)<\/synonyms>"), result_text);
 
-                    if (await Equals_check.Compare_strings(a_name, title, cancellationToken))
-                    {
-                        return id;
-                    }
-                    if (await Equals_check.Compare_strings(b_name, title, cancellationToken))
-                    {
-                        return id;
-                    }
-                    foreach (string d_name in c_name.Split(';'))
-                    {
-                        if (await Equals_check.Compare_strings(d_name, title, cancellationToken))
+                        if (await Equals_check.Compare_strings(a_name, title, cancellationToken))
                         {
                             return id;
                         }
-                    }
+                        if (await Equals_check.Compare_strings(b_name, title, cancellationToken))
+                        {
+                            return id;
+                        }
+                        foreach (string d_name in c_name.Split(';'))
+                        {
+                            if (await Equals_check.Compare_strings(d_name, title, cancellationToken))
+                            {
+                                return id;
+                            }
+                        }
 
-                    if (Int32.TryParse(id, out int n))
-                    {
-                        anime_search_names.Add(a_name);
-                        anime_search_ids.Add(id);
+                        if (Int32.TryParse(id, out int n))
+                        {
+                            anime_search_names.Add(a_name);
+                            anime_search_ids.Add(id);
+                        }
                     }
+                    x++;
                 }
-                x++;
-            }
             }
             else
             {
@@ -305,7 +304,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
                 while (!string.IsNullOrEmpty(regex_id))
                 {
                     regex_id = "";
-                    regex_id=await One_line_regex(new Regex(@"(#revInfo(.*?)"+'"'+"(>(.*?)<))"), WebContent, 2, x);
+                    regex_id = await One_line_regex(new Regex(@"(#revInfo(.*?)" + '"' + "(>(.*?)<))"), WebContent, 2, x);
                     if (!string.IsNullOrEmpty(regex_id))
                     {
                         try
