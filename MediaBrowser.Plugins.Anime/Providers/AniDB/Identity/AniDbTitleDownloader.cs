@@ -84,10 +84,9 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
             await AniDbSeriesProvider.RequestLimiter.Tick(cancellationToken);
             await Task.Run(() => Thread.Sleep(Plugin.Instance.Configuration.AniDB_wait_time));
             using (var stream = await client.OpenReadTaskAsync(TitlesUrl))
-            using (var unzipped = new GZipStream(stream, CompressionMode.Decompress))
             using (var writer = File.Open(titlesFile, FileMode.Create, FileAccess.Write))
             {
-                await unzipped.CopyToAsync(writer).ConfigureAwait(false);
+                await stream.CopyToAsync(writer).ConfigureAwait(false);
             }
         }
 
@@ -104,10 +103,9 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
             await AniDbSeriesProvider.RequestLimiter.Tick(cancellationToken);
             await Task.Run(() => Thread.Sleep(Plugin.Instance.Configuration.AniDB_wait_time));
             using (var stream = await client.OpenReadTaskAsync(TitlesUrl))
-            using (var unzipped = new GZipStream(stream, CompressionMode.Decompress))
             using (var writer = File.Open(titlesFile, FileMode.Create, FileAccess.Write))
             {
-                await unzipped.CopyToAsync(writer).ConfigureAwait(false);
+                await stream.CopyToAsync(writer).ConfigureAwait(false);
             }
         }
 

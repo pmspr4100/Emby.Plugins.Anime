@@ -140,7 +140,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         /// <returns></returns>
         public async Task<string> Get_ImageUrlAsync(string WebContent)
         {
-            return await One_line_regex(new Regex("src=\"" + @"(?s)(.*?)" + "\""), await One_line_regex(new Regex(" < div style=\"text - align: center; \">" + @"(?s)(.*?)alt="), WebContent));
+            return await One_line_regex(new Regex("src=\"(?s)(.*?)\""), await One_line_regex(new Regex("<div style=\"text-align: center;\">(?s)(.+?)alt="), WebContent));
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         /// <returns></returns>
         public async Task<string> Get_OverviewAsync(string WebContent)
         {
-            return System.Net.WebUtility.HtmlDecode(await One_line_regex(new Regex("itemprop=\\" + '"' + "description\\" + '"' + @">(.*?)<\/span>"), WebContent));
+            return WebUtility.HtmlDecode(await One_line_regex(new Regex("<span itemprop=\"description\">(?s)(.+?)</span>"), WebContent));
         }
 
         /// <summary>
