@@ -80,7 +80,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
             _logger.Debug("Downloading new AniDB titles file.");
 
             var client = new WebClient();
-
+            client.Headers.Add("User-Agent", "Emby/4.0");
             await AniDbSeriesProvider.RequestLimiter.Tick(cancellationToken);
             await Task.Run(() => Thread.Sleep(Plugin.Instance.Configuration.AniDB_wait_time));
             using (var stream = await client.OpenReadTaskAsync(TitlesUrl))
@@ -99,7 +99,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Identity
         private static async Task DownloadTitles_static(string titlesFile, CancellationToken cancellationToken)
         {
             var client = new WebClient();
-
+            client.Headers.Add("User-Agent", "Emby/4.0");
             await AniDbSeriesProvider.RequestLimiter.Tick(cancellationToken);
             await Task.Run(() => Thread.Sleep(Plugin.Instance.Configuration.AniDB_wait_time));
             using (var stream = await client.OpenReadTaskAsync(TitlesUrl))
