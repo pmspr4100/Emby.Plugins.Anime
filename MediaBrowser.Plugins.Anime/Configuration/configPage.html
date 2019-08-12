@@ -86,12 +86,10 @@
                 var page = this;
                 ApiClient.getPluginConfiguration(animeConfigurationPage.pluginUniqueId).then(function (config) {
                     $('#titleLanguage', page).val(config.TitlePreference).change();
-                	//$('#chkAutomaticUpdates', page).checked(config.AllowAutomaticMetadataUpdates);
-                    $('#chkTidyGenres', page).checked(config.TidyGenreList);
+                    page.querySelector('#chkTidyGenres').checked = config.TidyGenreList;
 					$('#chkMaxGenres', page).val(config.MaxGenres).change();
 					$('#chkAniDB_wait_time', page).val(config.AniDB_wait_time).change();
-					//$('#chkAnidbSeasonOne', page).checked(config.UseAnidbOrderingWithSeasons);
-					$('#chkAddAnimeGenre', page).checked(config.AddAnimeGenre);
+                    page.querySelector('#chkAddAnimeGenre').checked = config.AddAnimeGenre;
                     Dashboard.hideLoadingMsg();
                 });
             });
