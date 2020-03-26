@@ -11,8 +11,7 @@
                 <form class="animeConfigurationForm">
                     
 					<div class="selectContainer">
-						<label class="selectLabel" for="titleLanguage">Title Language:</label>
-						<select is="emby-select" id="titleLanguage" name="titleLanguage" class="emby-select-withcolor emby-select">
+						<select is="emby-select" id="titleLanguage" name="titleLanguage" label="Title Language:">
                             <option id="optLanguageLocalized" value="Localized">Localized</option>
                             <option id="optLanguageRomaji" value="JapaneseRomaji">Romaji</option>
                             <option id="optLanguageJapanese" value="Japanese">Japanese</option>
@@ -20,18 +19,9 @@
 						</select>
 						<div class="selectArrowContainer"><div style="visibility:hidden;">0</div><i class="selectArrow md-icon"></i></div>
 					</div>
-					<!--
-                    <div class="checkboxContainer checkboxContainer-withDescription">
-                        <label>
-                            <input is="emby-checkbox" type="checkbox" id="chkAutomaticUpdates" name="chkAutomaticUpdates"/>
-                            <span>Allow Automatic Metadata Updates</span>
-                        </label>
-						<div class="fieldDescription checkboxFieldDescription"></div>
-                    </div>
-					-->
+
 					<div class="inputContainer">
-						<label class="inputLabel inputLabel-float inputLabelUnfocused" for="chkMaxGenres">Max Genres [0: unlimited]</label>
-						<input is="emby-input" type="number" min="0" id="chkMaxGenres" name="chkMaxGenres" class="emby-input">
+						<input is="emby-input" type="number" min="0" id="chkMaxGenres" name="chkMaxGenres" label="Max Genres [0: unlimited]" />
 						<div class="fieldDescription"></div>
 					</div>
 					
@@ -52,19 +42,10 @@
                     </div>
 					
 					<div class="inputContainer">
-						<label class="inputLabel inputLabel-float inputLabelUnfocused" for="chkAniDB_wait_time">AniDB wait time [ms]</label>
-						<input is="emby-input" type="number" min="0" id="chkAniDB_wait_time" name="chkAniDB_wait_time" class="emby-input">
+						<input is="emby-input" type="number" min="0" id="chkAniDB_wait_time" name="chkAniDB_wait_time" label="AniDB wait time [ms]" />
 						<div class="fieldDescription">Set this to prevent IP ban.</div>
 					</div>
-					<!--
-                    <div class="checkboxContainer checkboxContainer-withDescription">
-                        <label>
-                            <input is="emby-checkbox" type="checkbox" id="chkAnidbSeasonOne" name="chkAnidbSeasonOne"/>
-                            <span>Use AniDB Odering with Seasons</span>
-                        </label>
-						<div class="fieldDescription checkboxFieldDescription"></div>
-                    </div>
-					-->
+
                     <br />
                     <div>
                         <button is="emby-button" type="submit" class="raised button-submit block emby-button"><span>Save</span></button>
