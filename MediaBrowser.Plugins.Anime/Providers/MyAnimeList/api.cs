@@ -1,4 +1,4 @@
-﻿using MediaBrowser.Model.Entities;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Logging;
 using MediaBrowser.Model.Providers;
 using MediaBrowser.Plugins.Anime.Configuration;
@@ -130,7 +130,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         /// <param name="WebContent"></param>
         public async Task<string> Get_RatingAsync(string WebContent)
         {
-            return await One_line_regex(new Regex("<span itemprop=\"ratingValue\">" + @"(.*?)<"), WebContent);
+            return await One_line_regex(new Regex("<span itemprop=\"ratingValue\" class=\"score-label score-.*?\">" + @"(.*?)<"), WebContent);
         }
 
         /// <summary>
