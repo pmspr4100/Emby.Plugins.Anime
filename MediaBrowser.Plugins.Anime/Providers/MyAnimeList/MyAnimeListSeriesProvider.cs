@@ -1,4 +1,4 @@
-﻿using MediaBrowser.Common.Configuration;
+using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;
@@ -51,6 +51,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
                 result.HasMetadata = true;
 
                 result.Item.ProviderIds.Add(provider_name, aid);
+                result.Item.Name = await _api.SelectName(WebContent, Plugin.Instance.Configuration.TitlePreference, "en", cancellationToken);
                 result.Item.Overview = await _api.Get_OverviewAsync(WebContent);
                 result.ResultLanguage = "eng";
                 try
