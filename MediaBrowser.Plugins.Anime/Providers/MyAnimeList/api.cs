@@ -63,7 +63,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         /// <param name="language"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        private async Task<string> SelectName(string WebContent, TitlePreferenceType preference, string language, CancellationToken cancellationToken)
+        public async Task<string> SelectName(string WebContent, TitlePreferenceType preference, string language, CancellationToken cancellationToken)
         {
             if (preference == TitlePreferenceType.Localized && language == "en")
                 return await Get_title("en", WebContent);
