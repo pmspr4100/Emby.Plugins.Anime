@@ -22,7 +22,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         private readonly IApplicationPaths _paths;
         private readonly Api _api;
         public static string provider_name = ProviderNames.MyAnimeList;
-        public int Order => -5;
+        public int Order => 5;
         public string Name => "MyAnimeList";
 
         public MyAnimeListSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient, ILogManager logManager)

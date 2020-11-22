@@ -20,7 +20,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniSearch
         private readonly IHttpClient _httpClient;
         private readonly IApplicationPaths _paths;
         private readonly ILogger _log;
-        public int Order => -3;
+        public int Order => 7;
         public string Name => "AniSearch";
 
         public AniSearchSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient, ILogManager logManager)

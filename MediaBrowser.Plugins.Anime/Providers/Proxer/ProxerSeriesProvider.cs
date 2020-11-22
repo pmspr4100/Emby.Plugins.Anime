@@ -21,7 +21,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.Proxer
         private readonly IHttpClient _httpClient;
         private readonly IApplicationPaths _paths;
         public static string provider_name = ProviderNames.Proxer;
-        public int Order => -4;
+        public int Order => 6;
         public string Name => "Proxer";
 
         public ProxerSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient, ILogManager logManager)

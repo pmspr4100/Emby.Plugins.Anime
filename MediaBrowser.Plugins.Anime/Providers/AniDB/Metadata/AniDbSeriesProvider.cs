@@ -120,7 +120,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
 
         internal static AniDbSeriesProvider Current { get; private set; }
         public IAniDbTitleMatcher TitleMatcher { get; set; }
-        public int Order => -1;
+        public int Order => 9;
 
         public async Task<MetadataResult<Series>> GetMetadata(SeriesInfo info, CancellationToken cancellationToken)
         {

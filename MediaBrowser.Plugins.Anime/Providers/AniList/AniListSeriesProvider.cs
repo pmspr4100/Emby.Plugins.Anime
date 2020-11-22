@@ -24,7 +24,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniList
         private readonly IApplicationPaths _paths;
         private readonly ILogger _log;
         private readonly Api _api;
-        public int Order => -2;
+        public int Order => 8;
         public string Name => "AniList";
 
         public AniListSeriesProvider(IApplicationPaths appPaths, IHttpClient httpClient, ILogManager logManager, IJsonSerializer jsonSerializer)
