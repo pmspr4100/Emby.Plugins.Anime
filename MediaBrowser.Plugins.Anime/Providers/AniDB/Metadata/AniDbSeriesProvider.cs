@@ -126,7 +126,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
         {
             var result = new MetadataResult<Series>();
 
-            var aid = info.ProviderIds.GetOrDefault(ProviderNames.AniDb);
+            var aid = info.GetProviderId(ProviderNames.AniDb);
             if (string.IsNullOrEmpty(aid) && !string.IsNullOrEmpty(info.Name))
             {
                 aid = await Equals_check.Fast_xml_search(info.Name, info.Name, cancellationToken, true);
@@ -141,7 +141,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                 result.Item = new Series();
                 result.HasMetadata = true;
 
-                result.Item.ProviderIds.Add(ProviderNames.AniDb, aid);
+                result.Item.SetProviderId(ProviderNames.AniDb, aid);
 
                 var seriesDataPath = await GetSeriesData(_appPaths, _httpClient, aid, cancellationToken);
                 FetchSeriesInfo(result, seriesDataPath, info.MetadataLanguage ?? "en");
@@ -458,7 +458,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                             if (ids.Count > 0)
                             {
                                 var firstId = ids.OrderBy(i => i).First().ToString(CultureInfo.InvariantCulture);
-                                series.ProviderIds.Add(ProviderNames.MyAnimeList, firstId);
+                                series.SetProviderId(ProviderNames.MyAnimeList, firstId);
                                 //                                series.ProviderIds.Add(ProviderNames.AniList, firstId);
                             }
 

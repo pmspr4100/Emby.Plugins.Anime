@@ -37,7 +37,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         {
             var result = new MetadataResult<Series>();
 
-            var aid = info.ProviderIds.GetOrDefault(provider_name);
+            var aid = info.GetProviderId(provider_name);
             if (string.IsNullOrEmpty(aid))
             {
                 _log.Info("Start MyAnimeList... Searching(" + info.Name + ")");
@@ -50,7 +50,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
                 result.Item = new Series();
                 result.HasMetadata = true;
 
-                result.Item.ProviderIds.Add(provider_name, aid);
+                result.Item.SetProviderId(provider_name, aid);
                 result.Item.Name = await _api.SelectName(WebContent, Plugin.Instance.Configuration.TitlePreference, "en", cancellationToken);
                 result.Item.Overview = await _api.Get_OverviewAsync(WebContent);
                 result.ResultLanguage = "eng";
@@ -76,7 +76,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.MyAnimeList
         {
             var results = new Dictionary<string, RemoteSearchResult>();
 
-            var aid = searchInfo.ProviderIds.GetOrDefault(provider_name);
+            var aid = searchInfo.GetProviderId(provider_name);
             if (!string.IsNullOrEmpty(aid))
             {
                 if (!results.ContainsKey(aid))

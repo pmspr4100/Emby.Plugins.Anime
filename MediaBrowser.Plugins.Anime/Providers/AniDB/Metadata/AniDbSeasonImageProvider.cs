@@ -37,7 +37,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
             var season = (Season)item;
             var series = season.Series;
 
-            var seriesId = series.ProviderIds.GetOrDefault(ProviderNames.AniDb);
+            var seriesId = series.GetProviderId(ProviderNames.AniDb);
             if (string.IsNullOrEmpty(seriesId))
                 return Enumerable.Empty<RemoteImageInfo>();
 

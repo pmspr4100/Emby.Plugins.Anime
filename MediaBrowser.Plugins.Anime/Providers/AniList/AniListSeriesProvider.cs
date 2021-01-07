@@ -39,7 +39,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniList
         {
             var result = new MetadataResult<Series>();
 
-            var aid = info.ProviderIds.GetOrDefault(ProviderNames.AniList);
+            var aid = info.GetProviderId(ProviderNames.AniList);
             if (string.IsNullOrEmpty(aid))
             {
                 _log.Info("Start AniList... Searching(" + info.Name + ")");
@@ -53,7 +53,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniList
                 result.HasMetadata = true;
                
                 result.People = await _api.GetPersonInfo(WebContent.data.Media.id, cancellationToken);
-                result.Item.ProviderIds.Add(ProviderNames.AniList, aid);
+                result.Item.SetProviderId(ProviderNames.AniList, aid);
                 result.Item.Overview = WebContent.data.Media.description;
                 try
                 {
@@ -73,7 +73,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniList
         {
             var results = new Dictionary<string, RemoteSearchResult>();
 
-            var aid = searchInfo.ProviderIds.GetOrDefault(ProviderNames.AniList);
+            var aid = searchInfo.GetProviderId(ProviderNames.AniList);
             if (!string.IsNullOrEmpty(aid))
             {
                 if (!results.ContainsKey(aid))

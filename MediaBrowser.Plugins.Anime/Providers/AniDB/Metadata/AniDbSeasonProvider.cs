@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MediaBrowser.Model.Entities;
 
 namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
 {
@@ -31,12 +32,12 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
                 }
             };
 
-            var seriesId = info.ProviderIds.GetOrDefault(ProviderNames.AniDb);
-            if (seriesId == null)
+            var seriesId = info.GetProviderId(ProviderNames.AniDb);
+            if (string.IsNullOrEmpty(seriesId))
                 return result;
 
             var seriesInfo = new SeriesInfo();
-            seriesInfo.ProviderIds.Add(ProviderNames.AniDb, seriesId);
+            seriesInfo.SetProviderId(ProviderNames.AniDb, seriesId);
 
             var seriesResult = await _seriesProvider.GetMetadata(seriesInfo, cancellationToken);
             if (seriesResult.HasMetadata)

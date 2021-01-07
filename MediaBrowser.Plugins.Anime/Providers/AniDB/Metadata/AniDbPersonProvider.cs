@@ -26,7 +26,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniDB.Metadata
         {
             var result = new MetadataResult<Person>();
 
-            if (!string.IsNullOrEmpty(info.ProviderIds.GetOrDefault(ProviderNames.AniDb)))
+            if (!string.IsNullOrEmpty(info.GetProviderId(ProviderNames.AniDb)))
                 return Task.FromResult(result);
 
             var person = AniDbSeriesProvider.GetPersonInfo(_paths.CachePath, info.Name);

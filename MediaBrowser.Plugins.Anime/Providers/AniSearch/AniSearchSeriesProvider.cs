@@ -34,7 +34,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniSearch
         {
             var result = new MetadataResult<Series>();
 
-            var aid = info.ProviderIds.GetOrDefault(ProviderNames.AniSearch);
+            var aid = info.GetProviderId(ProviderNames.AniSearch);
             if (string.IsNullOrEmpty(aid))
             {
                 _log.Info("Start AniSearch... Searching(" + info.Name + ")");
@@ -47,7 +47,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniSearch
                 result.Item = new Series();
                 result.HasMetadata = true;
 
-                result.Item.ProviderIds.Add(ProviderNames.AniSearch, aid);
+                result.Item.SetProviderId(ProviderNames.AniSearch, aid);
                 result.Item.Overview = await Api.Get_Overview(WebContent);
                 try
                 {
@@ -67,7 +67,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.AniSearch
         {
             var results = new Dictionary<string, RemoteSearchResult>();
 
-            var aid = searchInfo.ProviderIds.GetOrDefault(ProviderNames.AniSearch);
+            var aid = searchInfo.GetProviderId(ProviderNames.AniSearch);
             if (!string.IsNullOrEmpty(aid))
             {
                 if (!results.ContainsKey(aid))

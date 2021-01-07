@@ -35,7 +35,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.Proxer
         {
             var result = new MetadataResult<Series>();
 
-            var aid = info.ProviderIds.GetOrDefault(provider_name);
+            var aid = info.GetProviderId(provider_name);
             if (string.IsNullOrEmpty(aid))
             {
                 _log.Info("Start Proxer... Searching(" + info.Name + ")");
@@ -48,7 +48,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.Proxer
                 result.Item = new Series();
                 result.HasMetadata = true;
 
-                result.Item.ProviderIds.Add(provider_name, aid);
+                result.Item.SetProviderId(provider_name, aid);
                 result.Item.Overview = await Api.Get_Overview(WebContent);
                 result.ResultLanguage = "ger";
                 try
@@ -68,7 +68,7 @@ namespace MediaBrowser.Plugins.Anime.Providers.Proxer
         {
             var results = new Dictionary<string, RemoteSearchResult>();
 
-            var aid = searchInfo.ProviderIds.GetOrDefault(provider_name);
+            var aid = searchInfo.GetProviderId(provider_name);
             if (!string.IsNullOrEmpty(aid))
             {
                 if (!results.ContainsKey(aid))
