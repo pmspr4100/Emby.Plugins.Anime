@@ -25,7 +25,7 @@ namespace MediaBrowser.Plugins.Anime.Configuration
         German,
         
         /// <summary>
-        /// Use titles in German.
+        /// Use titles in French.
         /// </summary>
         French,
     }
